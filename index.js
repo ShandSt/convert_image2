@@ -9,7 +9,8 @@ const awsSqs = require('./aws/sqs.js');
 const sharp = require('./convert/sharp.js');
 const path = require('path');
 const fs = require('fs');
-//const sharp = require('sharp');
+const fileType = require('file-type');
+
 require('dotenv').config();
 
 AWS.config.update({
@@ -24,9 +25,10 @@ const consumer = Consumer.create({
     
 	const image = await Images.findOne({ queueId: message.MessageId, convert: false});
 	const img = await awsS3.getImage(image.imageS3);
-	const newImg = await sharp.convertAction('resize', img);
+	const newImg = await sharp.convertAction('typeJpg', img);
 
-	const fileName = 'download_at_' + Date.now() + '-' + Math.round(Math.random() * 1E9); 
+	const foramtImage = await fileType(newImg);
+	const fileName = 'download_at_' + Date.now() + '-' + Math.round(Math.random() * 1E9) +'.'+ foramtImage.ext; 
 	await awsS3.sendS3(fileName, newImg);
 	const {MessageId} = await awsSqs.sendMessage(image.seesionId);
 

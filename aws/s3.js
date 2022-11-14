@@ -38,6 +38,7 @@ const sendS3 = async (key, file) => {
     Bucket: "convertor-image-express",
     Key: key,
     Body: file,
+    "ContentType": "image/jpeg",
   };
 
   try {
