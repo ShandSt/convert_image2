@@ -1,0 +1,22 @@
+{
+  "name": "Image convert2",
+  "version": "1.0.0",
+  "description": "Image convert2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "shandstas",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.179.0",
+    "@aws-sdk/client-sqs": "^3.179.0",
+    "aws-sdk": "^2.1225.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.6.1",
+    "sharp": "^0.31.1",
+    "sqs-consumer": "^5.7.0"
+  }
+}
