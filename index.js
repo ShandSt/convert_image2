@@ -25,9 +25,9 @@ const consumer = Consumer.create({
 	const image = await Images.findOne({ queueId: message.MessageId, convert: false});
 	const img = await awsS3.getImage(image.imageS3);
 	const newImg = await sharp.convertAction('resize', img);
-console.log(newImg);
+
 	const fileName = 'download_at_' + Date.now() + '-' + Math.round(Math.random() * 1E9); 
-	await awsS3.sendS3(fileName, newImg.options.input.buffer);
+	await awsS3.sendS3(fileName, newImg);
 	const {MessageId} = await awsSqs.sendMessage(image.seesionId);
 
 	await Images.findOneAndUpdate({queueId: message.MessageId}, 
