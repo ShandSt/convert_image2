@@ -1,7 +1,6 @@
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
-sharp.cache(false);
 
 const resize = async (img) => {
 	try { 
@@ -58,11 +57,10 @@ const cropImage = async (img, left = 100, width = 100, height = 100, top = 100) 
 	}
 };
 
-const rotateImage = async (img) => {
+const rotateImage = async (img, rotate = 90) => {
 	try { 
 		const image = await sharp(img, { failOnError: false })
-		.rotate()
-		.withMetadata()
+		.rotate(rotate)
 		.toBuffer();
 
 		return image;
