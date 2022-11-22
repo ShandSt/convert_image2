@@ -23,7 +23,8 @@ const consumer = Consumer.create({
     
 	const image = await Images.findOne({ queueId: message.MessageId, convert: false});
 	const img = await awsS3.getImage(image.imageS3);
-	const newImg = await sharp.convertAction(image.action, img);
+	const foramtImg = await fileType(img);
+	const newImg = await sharp.convertAction(image.action, img, foramtImg.ext);
 
 	const foramtImage = await fileType(newImg);
 	const fileName = 'download_at_' + Date.now() + '-' + Math.round(Math.random() * 1E9) +'.'+ foramtImage.ext; 

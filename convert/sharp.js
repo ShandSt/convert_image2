@@ -1,6 +1,7 @@
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
+sharp.cache(false);
 
 const resize = async (img) => {
 	try { 
@@ -59,8 +60,9 @@ const cropImage = async (img, left = 100, width = 100, height = 100, top = 100) 
 
 const rotateImage = async (img) => {
 	try { 
-		const image = await sharp(img, { limitInputPixels: false })
+		const image = await sharp(img, { failOnError: false })
 		.rotate()
+		.withMetadata()
 		.toBuffer();
 
 		return image;
@@ -70,7 +72,7 @@ const rotateImage = async (img) => {
 	}
 };
 
-const addMem =  async(img) => {
+const addMem = async(img) => {
 	try {
  		const width = 150;
 		const height = 100;
@@ -114,7 +116,24 @@ const addWatermark = async (img) => {
   }
 };
 
-const convertAction = async (type, img) => {
+const compressImg = async (img, type = 'png') => {
+	try { 
+		const image = await sharp(img, { limitInputPixels: false })
+		.toFormat(type)
+		.jpeg({
+			quality: 40,
+			force: false,
+		})
+		.toBuffer();
+
+		return image;
+	} catch(err) {
+		console.log(err);
+        return;
+	}
+};
+
+const convertAction = async (type, img, typeImg = '') => {
 	let imageR;
 	if(type === 'resize') {
 		imageR = await resize(img);
@@ -136,6 +155,9 @@ const convertAction = async (type, img) => {
 	}
 	if(type === 'addWatermark') {
 		imageR = await addWatermark(img);
+	}
+	if(type === 'compressImg') {
+		imageR = await compressImg(img, typeImg);
 	}
 
 	return imageR;
