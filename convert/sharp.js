@@ -1,4 +1,6 @@
 const sharp = require('sharp');
+const path = require('path');
+const fs = require('fs');
 
 const resize = async (img) => {
 	try { 
@@ -47,7 +49,7 @@ const cropImage = async (img, left = 100, width = 100, height = 100, top = 100) 
 		const image = await sharp(img, { limitInputPixels: false })
 		.extract({left: left, width: width, height: height, top: top})
 		.toBuffer();
-console.log('cropImage finish');
+
 		return image;
 	} catch(err) {
 		console.log(err);
@@ -69,25 +71,48 @@ const rotateImage = async (img) => {
 };
 
 const addMem =  async(img) => {
-  const width = 900;
-  const height = 500;
-  const text = "E.T, go home";
+	try {
+ 		const width = 150;
+		const height = 100;
+		const text = "E.T, go home";
 
-  const svgText = `
-  <svg width="${width}" height="${height}">
-    <style>
-      .title { fill: red; font-size: 85px}
-    </style>
-    <text x="45%" y="40%" text-anchor="middle" class="title">${text}</text>
-  </svg>`;
+		const svgText = `
+		<svg width="${width}" height="${height}">
+			<style>
+			.title { fill: red; font-size: 25px}
+			</style>
+			<text x="45%" y="40%" text-anchor="middle" class="title">${text}</text>
+		</svg>`;
 
-  const svgBuffer = Buffer.from(svgText);
+		const svgBuffer = Buffer.from(svgText);
 
-  const image = await sharp(img, { limitInputPixels: false })
-  	.composite([{input: svgBuffer, left: 1150, top: 90}])
-  	.toBuffer();
-  return image;
-}
+		const image = await sharp(img, { limitInputPixels: false })
+			.composite([{input: svgBuffer, left: 50, top: 90}])
+			.toBuffer();
+  		return image;
+  	} catch(err) {
+		console.log(err);
+        return;
+	}
+};
+
+const addWatermark = async (img) => {
+  try {
+		const watermarkBuffer = fs.readFileSync(__dirname + "/watermark.jpeg");
+		
+		const image = await sharp(img, { limitInputPixels: false })
+  		.composite([{
+          input: watermarkBuffer,
+          top: 50,
+          left: 50,
+        },])
+  		.toBuffer();
+
+		return image;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const convertAction = async (type, img) => {
 	let imageR;
@@ -109,8 +134,11 @@ const convertAction = async (type, img) => {
 	if(type === 'addMem') {
 		imageR = await addMem(img);
 	}
+	if(type === 'addWatermark') {
+		imageR = await addWatermark(img);
+	}
 
 	return imageR;
-}
+};
 
 module.exports = { convertAction };

@@ -17,15 +17,12 @@ const getImage = async (key) => {
   };
 
   try {
-    // Create a helper function to convert a ReadableStream to a string
-
-    // Get the object} from the Amazon S3 bucket. It is returned as a ReadableStream.
+    // Get the object from the Amazon S3 bucket. It is returned as a ReadableStream.
     const data = await s3Client.send(new GetObjectCommand(bucketParams));
-    //console.log('0',data.Body);
     //return data.Body; // For unit tests.
     // Convert the ReadableStream to a string.
     const bodyContents = await streamToString(data.Body);
-    //console.log(bodyContents);
+
 
     return bodyContents;
   } catch (err) {
