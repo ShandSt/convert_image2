@@ -12,17 +12,18 @@ const fileType = require('file-type');
 require('dotenv').config();
 
 AWS.config.update({
-  	region: 'us-west-2',
+  	region: process.env.REGION_SQS,
 	accessKeyId: process.env.ACCESS_KEY_ID,
 	secretAccessKey: process.env.SECRET_ACCESS_KEY
 });
 
 const consumer = Consumer.create({
-  queueUrl: 'https://sqs.us-west-2.amazonaws.com/213324592790/convertor-image',
+  queueUrl: process.env.SQS_URL,
   handleMessage: async (message) => {
     
 	const image = await Images.findOne({ queueId: message.MessageId, convert: false});
 	const img = await awsS3.getImage(image.imageS3);
+	
 	const foramtImg = await fileType(img);
 	const newImg = await sharp.convertAction(image.action, img, foramtImg.ext);
 

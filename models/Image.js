@@ -1,7 +1,8 @@
 const { times } = require('lodash');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-mongoose.connect('mongodb+srv://stas:qwe12391@cluster0.gtg0hlw.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://'+ process.env.MONGO_CONNECT +'/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

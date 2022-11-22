@@ -15,9 +15,11 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "file-type": "^10.11.0",
+    "gify": "^0.2.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.6.1",
     "sharp": "^0.31.2",
-    "sqs-consumer": "^5.7.0"
+    "sqs-consumer": "^5.7.0",
+    "stream": "^0.0.2"
   }
 }

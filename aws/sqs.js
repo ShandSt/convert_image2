@@ -1,10 +1,10 @@
 const { SendMessageCommand } = require('@aws-sdk/client-sqs');
 const { sqsClient } = require('../libs/sqsClient.js');
-
+require('dotenv').config();
 
 const sendMessage = async function (seesionId) {
   // Set the parameters
-  const queueURL = "https://sqs.us-west-2.amazonaws.com/213324592790/download-convert-image"; 
+  const queueURL = process.env.SQS_URL_DOWNLOAD; 
 
   const params = {
     DelaySeconds: 10,

@@ -1,6 +1,7 @@
 const { GetObjectCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
 const { s3Client } = require( "../libs/s3Client.js");
 const fs = require('fs');
+require('dotenv').config();
 
 const streamToString = (stream) =>
   new Promise((resolve, reject) => {
@@ -12,7 +13,7 @@ const streamToString = (stream) =>
       
 const getImage = async (key) => {
   const bucketParams = {
-    Bucket: "convertor-image-express",
+    Bucket: process.env.BUCKET,
     Key: key,
   };
 
@@ -23,7 +24,6 @@ const getImage = async (key) => {
     // Convert the ReadableStream to a string.
     const bodyContents = await streamToString(data.Body);
 
-
     return bodyContents;
   } catch (err) {
     console.log("Error", err);
@@ -32,7 +32,7 @@ const getImage = async (key) => {
 
 const sendS3 = async (key, file) => {
   const params = {
-    Bucket: "convertor-image-express",
+    Bucket: process.env.BUCKET,
     Key: key,
     Body: file,
     "ContentType": "image/jpeg",
