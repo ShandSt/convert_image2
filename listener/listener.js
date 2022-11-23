@@ -23,7 +23,7 @@ const consumer = Consumer.create({
 	const image = await Images.findOne({ queueId: message.MessageId, convert: false});
 	const img = await awsS3.getImage(image.imageS3);
 	if (image.action === 'videoToGif') {
-		await fs.writeFileSync("video.mp4", img);
+		await fs.writeFileSync("video.mp4", img, {encoding:'utf8',flag:'w'});
 	}
 	
 	const foramtImg = await fileType(img);

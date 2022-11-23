@@ -133,13 +133,13 @@ const compressImg = async (img, type = 'png') => {
 };
 
 const videoToGif = async (video) => {
-	gify("video.mp4", 'out.gif', {}, (err) => {
+	await gify("video.mp4", 'out.gif', {}, (err) => {
 		if (err) throw err;
 		console.log('convert');
 		return;
 	});
 
-	const gif = fs.readFileSync('out.gif');
+	const gif = await fs.readFileSync('out.gif');
 	return gif;
 };
 
