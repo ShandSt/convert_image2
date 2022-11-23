@@ -34,8 +34,7 @@ const sendS3 = async (key, file) => {
   const params = {
     Bucket: process.env.BUCKET,
     Key: key,
-    Body: file,
-    "ContentType": "image/jpeg",
+    Body: file
   };
 
   try {

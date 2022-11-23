@@ -1,7 +1,7 @@
 const sharp = require('sharp');
 const fs = require('fs');
 const gify = require('gify');
-const { Readable } = require('stream');
+const { dirname } = require('path');
 
 const resize = async (img) => {
 	try { 
@@ -133,20 +133,14 @@ const compressImg = async (img, type = 'png') => {
 };
 
 const videoToGif = async (video) => {
-	const opts = {
-  		height: 300,
-		rate: 10
-	};
-
-	console.time('convert');
-	gify(video, '../public/out.gif', opts, (err) => {
+	gify("video.mp4", 'out.gif', {}, (err) => {
 		if (err) throw err;
-		console.timeEnd('convert');
-		const s = fs.statSync('../public/out.gif');
-		console.log('size: %smb', s.size / 1024 / 1024 | 0);
-
-		return s;
+		console.log('convert');
+		return;
 	});
+
+	const gif = fs.readFileSync('out.gif');
+	return gif;
 };
 
 const convertAction = async (type, img, typeImg = '') => {
